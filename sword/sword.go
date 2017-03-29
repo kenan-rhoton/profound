@@ -16,7 +16,7 @@ func longer(first, second []string) []string {
 }
 
 func Verse(in string) (string, error) {
-    n := exec.Command("diatheke", "-b", "Elzevir", "-o", "mn", "-k", in)
+    n := exec.Command("diatheke", "-b", "Elzevir", "-k", in)
     o := exec.Command("diatheke", "-b", "OSHB", "-k", in)
     nt, nerr := n.CombinedOutput()
     ot, oerr := o.CombinedOutput()
