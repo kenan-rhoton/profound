@@ -17,8 +17,8 @@ func TestNewTestamentVerse(t *testing.T) {
             fmt.Println(err.Error())
             t.Fail()
         }
-        if verse != data[1] {
-            fmt.Printf("\"%s\" is not \"%s\"\n", verse, data[1])
+        if verse.Text != data[1] {
+            fmt.Printf("\"%s\"\nis not\n\"%s\"\n", verse.Text, data[1])
             t.Fail()
         }
     }
@@ -26,8 +26,8 @@ func TestNewTestamentVerse(t *testing.T) {
 
 func TestOldTestamentVerse(t *testing.T) {
     testdata := [][]string{
-        []string{"Genesis 5:5", "ויהיו כל־ימי אדם אשׁר־חי תשׁע מאות שׁנה ושׁלשׁים שׁנה וימת׃ ס"},
-        []string{"Ex 4:3", "ויאמר השׁליכהו ארצה וישׁליכהו ארצה ויהי לנחשׁ וינס משׁה מפניו׃"},
+        []string{"Genesis 5:5", "ס ׃תמיו הנׁש םיׁשלׁשו הנׁש תואמ עׁשת יח־רׁשא םדא ימי־לכ ויהיו"},
+        []string{"Ex 4:3", "׃וינפמ הׁשמ סניו ׁשחנל יהיו הצרא והכילׁשיו הצרא והכילׁשה רמאיו"},
     }
 
     for _, data := range testdata {
@@ -36,8 +36,8 @@ func TestOldTestamentVerse(t *testing.T) {
             fmt.Println(err.Error())
             t.Fail()
         }
-        if verse != data[1] {
-            fmt.Printf("\"%s\" is not \"%s\"\n", verse, data[1])
+        if verse.Text != data[1] {
+            fmt.Printf("\"%s\"\nis not\n\"%s\"\n", verse.Text, data[1])
             t.Fail()
         }
     }
@@ -48,14 +48,25 @@ func TestIncorrectVerse(t *testing.T) {
         "Geonosis 5:5",
         "Enx 4:3",
         "Xv 5:4",
-        "Enx 4:3",
+        "Pselm 443:3",
     }
 
     for _, data := range testdata {
-        _, err := Verse(data)
-        if err.Error() != "Not found!" {
-            fmt.Println(err.Error())
+        x, err := Verse(data)
+        if err != nil {
+            if err.Error() != "Not found!" {
+                fmt.Println(err.Error())
+                t.Fail()
+            }
+        } else {
+            fmt.Println("Missing error:", x)
             t.Fail()
         }
     }
 }
+
+//func TestHebrewAnalysis(t *testing.T) {
+    //testdata := [][]string{
+        //[]string{"",""},
+    //}
+//}
