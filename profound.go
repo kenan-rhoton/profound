@@ -6,5 +6,5 @@ import (
 )
 
 func main() {
-    fmt.Printlm(sword.GetVerse("John 3:16"))
+    fmt.Println(sword.Verse("John 3:16"))
 }
