@@ -65,8 +65,43 @@ func TestIncorrectVerse(t *testing.T) {
     }
 }
 
-//func TestHebrewAnalysis(t *testing.T) {
-    //testdata := [][]string{
-        //[]string{"",""},
-    //}
-//}
+func TestHebrewAnalysis(t *testing.T) {
+    testdata := []struct{
+        verse string
+        ref int
+        res string
+    }{
+        struct{
+            verse string
+            ref int
+            res string
+        }{"Ex 4:3",
+        0,
+        `0055900559:  559  'amar  aw-mar'
+
+
+ a primitive root; to say (used with great
+ latitude):--answer, appoint, avouch, bid, boast self, call,
+ certify, challenge, charge, + (at the, give) command(-ment),
+ commune, consider, declare, demand, X desire, determine, X
+ expressly, X indeed, X intend, name, X plainly, promise,
+ publish, report, require, say, speak (against, of), X still, X
+ suppose, talk, tell, term, X that is, X think, use (speech),
+ utter, X verily, X yet.(StrongsHebrew)
+`},
+    }
+    for _, data := range testdata {
+        verse, err := Verse(data.verse)
+        if err != nil {
+            fmt.Println(err.Error())
+            t.Fail()
+        }
+        if len(verse.Ref) <= data.ref{
+            fmt.Printf("Not enough references")
+            t.Fail()
+        } else if verse.Ref[0] != data.res {
+            fmt.Printf("\"%s\"\nis not\n\"%s\"\n", verse.Ref[0], data.res)
+            t.Fail()
+        }
+    }
+}
