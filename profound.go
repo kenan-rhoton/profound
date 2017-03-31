@@ -101,7 +101,16 @@ func Setup() {
 	}
 
 	app.text = ui.NewPar("")
+	app.text.Text = "Text"
+	app.text.Height = 3
+	app.text.Width = ui.TermWidth()
+
 	app.exp = ui.NewPar("")
+	app.exp.Text = "Analysis"
+	app.exp.Height = ui.TermHeight() - 3
+	app.exp.Width = ui.TermWidth()
+
+
 	app.selected = 0
 	ui.Body.AddRows(ui.NewRow(ui.NewCol(12, 0, app.text, app.exp)))
 }
@@ -118,13 +127,7 @@ func Display() {
 	}
 
 	app.text.Text = strings.Join(displaytext, " ")
-	app.text.Height = 3
-	app.text.Width = ui.TermWidth()
-
 	app.exp.Text = app.verse.Ref[app.selected]
-	app.exp.Height = ui.TermHeight() - 3
-	app.exp.Width = ui.TermWidth()
-
 	ui.Body.Align()
 
 	ui.Render(ui.Body)
