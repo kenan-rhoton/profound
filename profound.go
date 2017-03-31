@@ -4,6 +4,8 @@ import (
 	ui "github.com/gizak/termui"
 	"github.com/kenan-rhoton/profound/sword"
 	"github.com/kenan-rhoton/profound/widgets"
+	"log"
+	"os"
 	"strings"
 )
 
@@ -12,6 +14,7 @@ var app struct {
 	selected int
 	text     *ui.Par
 	exp      *ui.Par
+	logfile  *os.File
 }
 
 func VerseMenu() {
@@ -41,7 +44,7 @@ func VerseMenu() {
 		app.verse, err = sword.Verse(i.Data)
 		if err != nil {
 			ui.Close()
-			panic(err)
+			log.Println(err)
 		}
 		app.selected = 0
 		ui.StopLoop()
@@ -82,14 +85,19 @@ func SetupHandlers() {
 }
 
 func Setup() {
-
-	SetupHandlers()
 	var err error
+	app.logfile, err = os.OpenFile("pro.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+	if err != nil {
+		ui.Close()
+		log.Fatal(err)
+	}
+	log.SetOutput(app.logfile)
+	SetupHandlers()
 	app.verse, err = sword.Verse("John 3:16")
 
 	if err != nil {
 		ui.Close()
-		panic(err)
+		log.Println(err)
 	}
 
 	app.text = ui.NewPar("")
@@ -127,10 +135,11 @@ func main() {
 	err := ui.Init()
 	if err != nil {
 		ui.Close()
-		panic(err)
+		log.Println(err)
 	}
 	defer ui.Close()
 	Setup()
+	defer app.logfile.Close()
 
 	Display()
 
